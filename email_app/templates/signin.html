@@ -1,0 +1,249 @@
+<!DOCTYPE html> {% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mail System</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
+    <!-- jQuery library -->
+    <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js "></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js "></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js "></script>
+</head>
+
+<body>
+
+    <!------ Include the above in your HEAD tag ---------->
+    <!--
+<div class="container login-container ">
+            <div class="row ">
+                <div class="col-md-12 login-form-2 ">
+                    <h3>Sign In For Email System</h3>
+                    <form method="POST " action=" ">
+                        {% csrf_token %}
+                        <div class="form-group ">
+                            <input type="text " class="form-control " id="username " name="username " placeholder="Username * " value=" " required />
+                        </div>
+                        <div class="form-group ">
+                            <input type="password " class="form-control " id="password " name="password " placeholder="Your Password * " value=" " required />
+                        </div>
+
+                        <center>
+                            <div class="form-group ">
+                                <input type="submit " id="submit " class="btnSubmit " value="Sign In " />
+                            </div>
+                        </center>
+                    </form>
+                </div>
+            </div>
+</div> -->
+
+
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <h1 class="text-center " style="margin: 30px; text-transform: uppercase; font-family: 'Times New Roman', Times, serif; ">
+                    Sign In
+                </h1>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-3 ">
+
+            </div>
+            <div class="col-md-6 " style="background-color: #0062cc; padding: 80px; border-radius: 5px; ">
+                <form action=" " method="POST " class="form ">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                        <input type="text " class="form-control " id="username " name="username " placeholder="Username * " value=" " required />
+                    </div>
+                    <div class="form-group ">
+                        <input type="password " class="form-control " id="password " name="password " placeholder="Your Password * " value=" " required />
+                    </div>
+                    <div class="form-group text-center ">
+                        <input type="submit " id="submit " class="btn btn-primary form-control " style="width: 30%; border-radius: 25px; " value="Sign In " />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade " id="messageModal1 " tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel " aria-hidden="true ">
+        <div class="modal-dialog " role="document ">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h5 class="modal-title " id="exampleModalLabel1 ">Successfull!</h5>
+                    <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+          <span aria-hidden="true ">&times;</span>
+        </button>
+                </div>
+                <div class="modal-body " id="modal-body1 ">
+                    {{message}}
+                </div>
+                <div class="modal-footer ">
+                    <button type="button " data-dismiss="modal " class="btn btn-danger ">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="messageModal2 " tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel " aria-hidden="true ">
+        <div class="modal-dialog " role="document ">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h5 class="modal-title " id="exampleModalLabel ">Invalid Information</h5>
+                    <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+          <span aria-hidden="true ">&times;</span>
+        </button>
+                </div>
+                <div class="modal-body " id="modal-body ">
+                    {{errors}}
+                </div>
+                <div class="modal-footer ">
+                    <button type="button " data-dismiss="modal " class="btn btn-danger ">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js " integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js " integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q " crossorigin="anonymous "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl " crossorigin="anonymous "></script>
+
+
+    <script>
+        function startListening(recognition, endCallback, resultCallback) {
+
+            recognition.start();
+
+            [
+                'onaudiostart',
+                'onaudioend',
+                'onend',
+                'onerror',
+                'onnomatch',
+                'onresult',
+                'onsoundstart',
+                'onsoundend',
+                'onspeechend',
+                'onstart'
+            ].forEach(function(eventName) {
+                recognition[eventName] = function(e) {
+                    //console.log(eventName, e);
+                    true
+                };
+            });
+
+            recognition.onspeechend = function() {
+                // document.querySelector('#start-button').innerHTML = 'Start Listening';
+                endCallback()
+            };
+            recognition.onresult = function() {
+                // document.querySelector('#demo-echo').textContent = event.results[0][0].transcript;
+                // resultCallback((event.results[0][0].transcript).replace(/ /g, ''));
+                resultCallback(event.results[0][0].transcript)
+            };
+
+            // document.querySelector('#start-button').innerHTML = 'Listening...';
+
+            // recognition.onend = function() {
+            // 	document.querySelector('#start-button').innerHTML = 'Start Listening';
+            // };
+            // recognition.onresult = function() {
+            // 	document.querySelector('#demo-echo').textContent = event.results[0][0].transcript;
+            // };
+        };
+    </script>
+
+    {% if message %}
+    <script>
+        $("#messageModal1 ").modal('show');
+        $("#messageModal1 ").modal('show');
+        var recognition = new(webkitSpeechRecognition || SpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+
+        responsiveVoice.speak("{{message}} ", 'UK English Female', {
+            onend: function() {
+
+            }
+        })
+    </script>
+
+    {% endif %} {% if errors %}
+    <script>
+        $("#messageModal2 ").modal('show');
+        var recognition = new(webkitSpeechRecognition || SpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+
+        responsiveVoice.speak("Invalid username or password. Try again. ", 'UK English Female', {
+            onend: function() {
+                location.replace("http://127.0.0.1:8000/signin/ ");
+            }
+        })
+    </script>
+    {% endif %} {% if start %}
+    <script>
+        var recognition = new(webkitSpeechRecognition || SpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+
+        responsiveVoice.speak("Enter Your Username ", 'UK English Female', {
+            onend: function() {
+                startListening(recognition,
+                    function() {
+                        responsiveVoice.speak('please wait a moment')
+                    },
+                    function(result) {
+                        var res = result.replace(/ /g, '').toLowerCase()
+                        $('#username').val(res)
+                        responsiveVoice.speak('Your username is ' + result, 'UK English Female', {
+                            onend: function() {
+                                responsiveVoice.speak("Enter Your password? ", 'UK English Female', {
+                                    onend: function() {
+                                        startListening(recognition,
+                                            function() {
+                                                responsiveVoice.speak('please wait a moment')
+                                            },
+                                            function(result) {
+                                                // alert(result)
+                                                result = result.replace(/\s/g, '').toLowerCase();
+                                                $('#password').val(result)
+                                                responsiveVoice.speak('Your password is ' + result, 'UK English Female', {
+                                                    onend: function() {
+                                                        $("#submit ").click();
+
+                                                    }
+                                                })
+                                            }
+                                        )
+                                    }
+                                })
+                            }
+                        })
+                    })
+            }
+        })
+    </script>
+
+    {% endif %}
+
+</body>
+
+</html>

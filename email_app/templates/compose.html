@@ -1,0 +1,344 @@
+{% include "./includes/header.html" %} {% load static %}
+<div class="container bootdey">
+    <div class="email-app">
+        <nav>
+            <a href="http://127.0.0.1:8000/compose/" class="btn btn-danger btn-block">New Email</a>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/inbox/"><i class="fa fa-inbox"></i> Inbox <span class="badge badge-danger">4</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/sent/"><i class="fa fa-rocket"></i> Sent</a>
+                </li>
+            </ul>
+        </nav>
+        <main>
+            <p class="text-center">New Message</p>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-row mb-3">
+                    <label for="to" class="col-2 col-sm-1 col-form-label">To:</label>
+                    <div class="col-10 col-sm-11">
+                        <input type="email" class="form-control" name="To" id="to" placeholder="Type email" required>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <label for="cc" class="col-2 col-sm-1 col-form-label">From:</label>
+                    <div class="col-10 col-sm-11">
+                        <input type="email" class="form-control" name="From" id="from" value="{{request.session.logged_in.email}}" placeholder="Type email" required>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <label for="bcc" class="col-2 col-sm-1 col-form-label">Subject:</label>
+                    <div class="col-10 col-sm-11">
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Type Subject" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-bold"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-italic"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-underline"></span>
+                        </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-align-left"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-align-right"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-align-center"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-align-justify"></span>
+                        </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-indent"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-outdent"></span>
+                        </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-list-ul"></span>
+                        </button>
+                                <button type="button" class="btn btn-light">
+                            <span class="fa fa-list-ol"></span>
+                        </button>
+                            </div>
+                            <button type="button" class="btn btn-light">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                            <button type="button" class="btn btn-light">
+                        <span class="fa fa-paperclip"></span>
+                    </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-tags"></span>
+                            <span class="caret"></span>
+                        </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">add label <span class="badge badge-danger"> Home</span></a>
+                                    <a class="dropdown-item" href="#">add label <span class="badge badge-info"> Job</span></a>
+                                    <a class="dropdown-item" href="#">add label <span class="badge badge-success"> Clients</span></a>
+                                    <a class="dropdown-item" href="#">add label <span class="badge badge-warning"> News</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="submit" class="btn btn-success form-control" value="Send">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+
+<div class="modal fade" id="messageModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Successfull!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body" id="modal-body1">
+                {{message}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="messageModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Invalid Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                {{errors}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+<script>
+    function startListening(recognition, endCallback, resultCallback) {
+
+        recognition.start();
+        [
+            'onaudiostart',
+            'onaudioend',
+            'onend',
+            'onerror',
+            'onnomatch',
+            'onresult',
+            'onsoundstart',
+            'onsoundend',
+            'onspeechend',
+            'onstart'
+        ].forEach(function(eventName) {
+            recognition[eventName] = function(e) {
+                //console.log(eventName, e);
+            };
+        });
+
+        recognition.onspeechend = function() {
+            // document.querySelector('#start-button').innerHTML = 'Start Listening';
+            endCallback()
+        };
+
+        recognition.onresult = function() {
+            let res = event.results[0][0].transcript
+            var res1 = res.replace("at", "@");
+            resultCallback(res1)
+        };
+
+    };
+</script>
+
+{% if message %}
+
+<script>
+    $("#messageModal1").modal('show')
+    var recognition = new(webkitSpeechRecognition || SpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+
+    responsiveVoice.speak("{{message}}", 'UK English Female', {
+        onend: function() {
+            window.location.replace("http://127.0.0.1:8000/inbox/")
+
+        }
+    })
+</script>
+{% endif %} {% if errors %}
+
+<script>
+    $("#messageModal2").modal('show')
+</script>
+
+{% endif %} {% if start %}
+<script>
+    var recognition = new(webkitSpeechRecognition || SpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+
+
+    function addContent(recognition) {
+        responsiveVoice.speak("You want to add more?", 'UK English Female', {
+            onend: function() {
+                startListening(recognition,
+                    function() {
+                        responsiveVoice.speak('please wait a moment')
+                    },
+                    function(result) {
+                        var result = result.replace(/ /g, '').toLowerCase()
+                        if (result == "yes") {
+                            responsiveVoice.speak(("Enter the content you want to add"), 'UK English Female', {
+                                onend: function() {
+                                    startListening(recognition,
+                                        function() {
+                                            responsiveVoice.speak('please wait a moment')
+                                        },
+                                        function(result) {
+                                            var result = result.replace(/ /g, '').toLowerCase()
+                                            let originalBody = $('#message').val()
+
+                                            let newBody = originalBody + " " + result
+
+                                            $('#message').val(newBody)
+
+                                            addContent(recognition)
+                                        })
+                                }
+                            })
+
+                        } else {
+
+                            responsiveVoice.speak(("Is your email body okay for submission?"), 'UK English Female', {
+                                onend: function() {
+                                    startListening(recognition,
+                                        function() {
+                                            responsiveVoice.speak('please wait a moment')
+                                        },
+                                        function(result) {
+                                            var result = result.replace(/ /g, '').toLowerCase()
+                                            if (result == "yes") {
+                                                $("#submit").click()
+
+                                            } else {
+                                                window.location.replace('http://127.0.0.1:8000/compose/')
+                                            }
+                                        })
+                                }
+                            })
+
+                        }
+                    }
+                )
+            }
+        })
+    }
+
+    responsiveVoice.speak("Enter Receiver's Email", 'UK English Female', {
+        onend: function() {
+            console.log("we are starting this now...."),
+
+                startListening(recognition,
+                    function() {
+                        responsiveVoice.speak('please wait a moment')
+                    },
+                    function(result) {
+
+                        var res1 = result.replace(/ /g, '').toLowerCase()
+                        $('#to').val(res1)
+                        responsiveVoice.speak('Receiver\'s email is ' + result, 'UK English Female', {
+                            onend: function() {
+                                responsiveVoice.speak("Enter email subject?", 'UK English Female', {
+                                    onend: function() {
+                                        startListening(recognition,
+                                            function() {
+                                                responsiveVoice.speak('please wait a moment')
+                                            },
+                                            function(result) {
+                                                // alert(result)
+                                                $('#subject').val(result)
+                                                responsiveVoice.speak('Email subject is ' + result, 'UK English Female', {
+                                                    onend: function() {
+                                                        responsiveVoice.speak("Enter email body?", 'UK English Female', {
+                                                            onend: function() {
+                                                                startListening(recognition,
+                                                                    function() {
+                                                                        responsiveVoice.speak('please wait a moment')
+                                                                    },
+                                                                    function(result) {
+                                                                        $('#message').val(result)
+                                                                        responsiveVoice.speak('Email body is ' + result, 'UK English Female', {
+                                                                            onend: function() {
+
+                                                                                addContent(recognition)
+
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                )
+                                                            }
+                                                        })
+
+
+                                                    }
+                                                })
+                                            }
+                                        )
+                                    }
+                                })
+                            }
+                        })
+                    })
+        }
+    })
+</script>
+
+{% endif %}
+
+</body>
+
+</html>

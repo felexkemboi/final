@@ -1,0 +1,259 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Message
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <style>
+        </style>
+    </head>
+    <body>
+        <br>
+<br>
+<div class="email-app mb-4">
+    <nav>
+      <a href="http://127.0.0.1:8000/compose/" class="btn btn-danger btn-block">New Email</a>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:8000/inbox/"><i class="fa fa-inbox"></i> Inbox <span class="badge badge-danger">4</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:8000/sent/"><i class="fa fa-rocket"></i> Sent</a>
+        </li>
+      </ul>
+    </nav>
+    <main class="message">
+      <div class="details">
+        <div class="title" id="title">{{message.subject}}</div>
+        <div class="header">
+          <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+          <div class="from">
+            <span>{{message.From}}</span>
+
+          </div>
+          <div class="date">{{message.created_at}}</b></div>
+        </div>
+        <div class="content">
+          <p>
+                {{message.body}}
+          </p>
+          <blockquote>
+          </blockquote>
+        </div>
+        </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+          <div class="form-group">
+            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply"></textarea>
+          </div>
+          <div class="form-group">
+            <button tabindex="3" id="submit" type="submit" class="btn btn-success">Send message</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+    <div class="modal fade" id="messageModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Successfull!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body1">
+            {{success}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-danger">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="messageModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Invalid Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+            {{errors}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-danger">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+        <script>
+    function startListening(recognition, endCallback, resultCallback) {
+
+    recognition.start();
+
+    [
+      'onaudiostart',
+      'onaudioend',
+      'onend',
+      'onerror',
+      'onnomatch',
+      'onresult',
+      'onsoundstart',
+      'onsoundend',
+      'onspeechend',
+      'onstart'
+    ].forEach(function (eventName) {
+      recognition[eventName] = function (e) {
+        console.log(eventName, e);
+      };
+    });
+
+    recognition.onspeechend = function () {
+      // document.querySelector('#start-button').innerHTML = 'Start Listening';
+      endCallback()
+    };
+    recognition.onresult = function () {
+      // document.querySelector('#demo-echo').textContent = event.results[0][0].transcript;
+      // resultCallback((event.results[0][0].transcript).replace(/ /g, ''));
+      resultCallback(event.results[0][0].transcript)
+    };
+
+    // document.querySelector('#start-button').innerHTML = 'Listening...';
+
+    // recognition.onend = function() {
+    // 	document.querySelector('#start-button').innerHTML = 'Start Listening';
+    // };
+    // recognition.onresult = function() {
+    // 	document.querySelector('#demo-echo').textContent = event.results[0][0].transcript;
+    // };
+  };
+
+</script>
+
+{% if success %}
+
+<script>
+    $("#messageModal1").modal('show')
+    var recognition = new (webkitSpeechRecognition || SpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+
+          responsiveVoice.speak("{{success}}", 'UK English Female', {
+            onend: function () {
+                    window.location.replace("http://127.0.0.1:8000/inbox/")
+
+                }
+                })
+
+</script>
+{% endif %}
+
+{% if errors %}
+
+<script>
+    $("#messageModal2").modal('show')
+</script>
+{% endif %}
+
+
+{% if start %}
+<script>
+             var recognition = new (webkitSpeechRecognition || SpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            var subject = "{{message.subject}}"
+            var sender = "{{message.From}}"
+            var date = "{{message.created_at}}"
+            var body = "{{message.body}}"
+          responsiveVoice.speak(("Email Subject is "+subject), 'UK English Female', {
+            onend: function () {
+                    responsiveVoice.speak(("Email Sender is "+sender), 'UK English Female', {
+                    onend: function () {
+                        responsiveVoice.speak(("Email Date is "+date), 'UK English Female', {
+                        onend: function () {
+                            responsiveVoice.speak(("Email body is "+body), 'UK English Female', {
+                            onend: function () {
+
+                                responsiveVoice.speak(("Do you want to reply to this email"), 'UK English Female', {
+                                onend: function () {
+
+                                    startListening(recognition,
+                                    function () {
+                                      responsiveVoice.speak('please wait a moment')
+                                    },
+                                    function (result) {
+                                      // alert(result)
+                                      var result = result.replace(/ /g, '').toLowerCase()
+                                       if(result=="yes"){
+                                            responsiveVoice.speak(("Enter your reply"), 'UK English Female', {
+                                            onend: function () {
+
+                                                startListening(recognition,
+                                                function () {
+                                                  responsiveVoice.speak('please wait a moment')
+                                                },
+                                                function (result) {
+                                                    $("#message").val(result)
+                                                    responsiveVoice.speak(("Your reply is "+result), 'UK English Female', {
+                                                    onend: function () {
+                                                    $("#submit").click()
+                                                    }
+                                                    })
+
+
+                                                }
+                                                )
+                                            }
+                                            })
+
+                                       }else{
+                                          window.location.replace("http://127.0.0.1:8000/inbox/")
+
+                                       }
+
+                                    }
+                                    )
+                                }
+                                })
+
+                            }
+                            })
+
+                        }
+                        })
+
+                    }
+                    })
+
+            }
+            })
+
+
+
+</script>
+{% endif %}
+
+
+    </body>
+</html>
