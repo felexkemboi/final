@@ -1,8 +1,7 @@
 from django.db import models
 
 # Create your models here.
-
-
+#User model
 class User(models.Model):
     first_name = models.CharField(max_length=150, null=False)
     last_name = models.CharField(max_length=150, null=False)
@@ -11,6 +10,7 @@ class User(models.Model):
     password1 = models.CharField(max_length=150, null=False)
     password2 = models.CharField(max_length=150, null=False)
 
+#Message model
 class Message(models.Model):
     created_at= models.DateTimeField(auto_now_add=True)
     To = models.EmailField(null=False)

@@ -1,16 +1,10 @@
 from django.urls import path
-# current directory
 from . import views
-from django.conf.urls import url
 
+#each path is bound to a specific view in the views file
 urlpatterns = [
-    #root path, technically its a sign up route
     path('',                    views.index,         name="index"),
-
-    #sign in
     path('signin/',             views.signin,        name="signin"),
-
-
     path('inbox/',              views.inbox,         name="inbox"),
     path('<id>/message_view/',  views.message_view,  name="message_view"),
     path('<id>/message_view2/', views.message_view2, name="message_view2"),
