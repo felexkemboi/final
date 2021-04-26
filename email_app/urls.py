@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-#each path is bound to a specific view in the views file
+#each path is bound to a specific view in the views.py file 
 urlpatterns = [
     path('',                    views.index,         name="index"),
     path('signin/',             views.signin,        name="signin"),
